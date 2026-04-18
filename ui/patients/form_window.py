@@ -2,7 +2,16 @@
 
 from __future__ import annotations
 
-from ui.qt_compat import QFormLayout, QLineEdit, QTextEdit, QVBoxLayout, QWidget, PYQT_AVAILABLE
+from config import GENDER_OPTIONS
+from ui.qt_compat import (
+    QComboBox,
+    QFormLayout,
+    QLineEdit,
+    QTextEdit,
+    QVBoxLayout,
+    QWidget,
+    PYQT_AVAILABLE,
+)
 
 
 class PatientFormWindow(QWidget):
@@ -15,7 +24,8 @@ class PatientFormWindow(QWidget):
         self.first_name = QLineEdit()
         self.last_name = QLineEdit()
         self.age = QLineEdit()
-        self.gender = QLineEdit()
+        self.gender = QComboBox()
+        self.gender.addItems(list(GENDER_OPTIONS))
         self.phone = QLineEdit()
         self.email = QLineEdit()
         self.address = QLineEdit()

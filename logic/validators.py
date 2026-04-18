@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import re
 
-EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
-PHONE_RE = re.compile(r"^[+\d][\d\s()-]{6,}$")
+from config import GENDER_OPTIONS
+
+EMAIL_RE = re.compile(r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$")
+PHONE_RE = re.compile(r"^\+?\d[\d\s()-]{6,19}$")
 BP_RE = re.compile(r"^\d{2,3}/\d{2,3}$")
 
 
@@ -31,6 +33,9 @@ def validate_phone(phone: str | None) -> str | None:
     phone = phone.strip()
     if not PHONE_RE.match(phone):
         raise ValueError("Teléfono inválido")
+    digits = re.sub(r"\D", "", phone)
+    if len(digits) < 7 or len(digits) > 15:
+        raise ValueError("Teléfono inválido")
     return phone
 
 
@@ -52,6 +57,8 @@ def validate_patient_payload(payload: dict) -> dict:
         raise ValueError("Edad inválida")
 
     gender = _require(payload.get("gender", ""), "Género")
+    if gender not in GENDER_OPTIONS:
+        raise ValueError("Género inválido")
 
     weight = payload.get("weight_kg")
     height = payload.get("height_m")

@@ -13,6 +13,10 @@ class PatientManager:
         self.session = session
         self.audit_logger = audit_logger
 
+    @staticmethod
+    def _patient_data(patient: Patient) -> dict:
+        return {column.name: getattr(patient, column.name) for column in Patient.__table__.columns}
+
     def create_patient(self, actor_id: int, payload: dict) -> Patient:
         validated = validate_patient_payload(payload)
         patient = Patient(**validated)
@@ -30,7 +34,7 @@ class PatientManager:
 
     def update_patient(self, actor_id: int, patient_id: int, payload: dict) -> Patient:
         patient = self.get_patient(patient_id)
-        validated = validate_patient_payload({**patient.__dict__, **payload})
+        validated = validate_patient_payload({**self._patient_data(patient), **payload})
         for key, value in validated.items():
             if hasattr(patient, key):
                 setattr(patient, key, value)

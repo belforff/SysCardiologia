@@ -17,8 +17,8 @@ except ImportError as exc:  # pragma: no cover - handled at runtime for missing 
 from database.models import Base, Role, RoleType, User
 from logic.auth import hash_password
 
-_ENGINE = create_engine(settings.database_url, future=True)
-SessionLocal = sessionmaker(bind=_ENGINE, autoflush=False, autocommit=False, future=True)
+_ENGINE = create_engine(settings.database_url)
+SessionLocal = sessionmaker(bind=_ENGINE, autoflush=False, autocommit=False)
 
 
 def get_engine():

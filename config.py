@@ -5,6 +5,8 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass
 
+GENDER_OPTIONS: tuple[str, ...] = ("Masculino", "Femenino", "Otro", "M", "F")
+
 
 @dataclass(frozen=True)
 class Settings:
